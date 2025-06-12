@@ -1,4 +1,4 @@
-import { Direction, GameState, Position } from './types';
+import { Direction, GameState, Position, GameHistoryState } from './types';
 
 const BOARD_SIZE = 4;
 
@@ -30,6 +30,31 @@ export const addRandomTile = (board: number[][]): number[][] => {
   return newBoard;
 };
 
+// 虚拟币系统常量
+export const COIN_REWARDS = {
+  FIRST_WIN: 100,
+  DAILY_BONUS: 10,
+  SCORE_MILESTONE: 50, // 每1000分奖励
+  TILE_ACHIEVEMENT: 25, // 达成新的最高数字
+};
+
+export const COIN_COSTS = {
+  UNDO: 20,
+  HINT: 10,
+  SHUFFLE: 50,
+};
+
+// 从localStorage加载虚拟币
+const loadCoins = (): number => {
+  const saved = localStorage.getItem('2048-coins');
+  return saved ? parseInt(saved, 10) : 100; // 新用户赠送100虚拟币
+};
+
+// 保存虚拟币到localStorage
+export const saveCoins = (coins: number): void => {
+  localStorage.setItem('2048-coins', coins.toString());
+};
+
 export const initializeGame = (): GameState => {
   let board = createEmptyBoard();
   board = addRandomTile(board);
@@ -39,7 +64,9 @@ export const initializeGame = (): GameState => {
     board,
     score: 0,
     gameOver: false,
-    won: false
+    won: false,
+    coins: loadCoins(),
+    history: []
   };
 };
 
@@ -172,4 +199,126 @@ export const hasWon = (board: number[][]): boolean => {
     }
   }
   return false;
+};
+
+// 添加历史记录
+export const addToHistory = (gameState: GameState): GameState => {
+  const historyEntry: GameHistoryState = {
+    board: gameState.board.map(row => [...row]),
+    score: gameState.score,
+    timestamp: Date.now()
+  };
+
+  const newHistory = [...gameState.history, historyEntry];
+  
+  // 只保留最近10步历史
+  if (newHistory.length > 10) {
+    newHistory.shift();
+  }
+
+  return {
+    ...gameState,
+    history: newHistory
+  };
+};
+
+// 回退功能
+export const undoMove = (gameState: GameState): { success: boolean, newState?: GameState, message: string } => {
+  if (gameState.history.length === 0) {
+    return { success: false, message: '没有可回退的步骤' };
+  }
+
+  if (gameState.coins < COIN_COSTS.UNDO) {
+    return { success: false, message: `虚拟币不足，需要${COIN_COSTS.UNDO}个虚拟币` };
+  }
+
+  const lastState = gameState.history[gameState.history.length - 1];
+  const newHistory = gameState.history.slice(0, -1);
+  const newCoins = gameState.coins - COIN_COSTS.UNDO;
+
+  const newState: GameState = {
+    board: lastState.board.map(row => [...row]),
+    score: lastState.score,
+    gameOver: false,
+    won: gameState.won, // 保持胜利状态
+    coins: newCoins,
+    history: newHistory
+  };
+
+  saveCoins(newCoins);
+
+  return { 
+    success: true, 
+    newState, 
+    message: `回退成功，消耗${COIN_COSTS.UNDO}个虚拟币` 
+  };
+};
+
+// 检查并奖励虚拟币
+export const checkCoinRewards = (oldState: GameState, newState: GameState): { coins: number, messages: string[] } => {
+  let bonusCoins = 0;
+  const messages: string[] = [];
+
+  // 分数里程碑奖励
+  const oldMilestones = Math.floor(oldState.score / 1000);
+  const newMilestones = Math.floor(newState.score / 1000);
+  if (newMilestones > oldMilestones) {
+    const milestoneReward = (newMilestones - oldMilestones) * COIN_REWARDS.SCORE_MILESTONE;
+    bonusCoins += milestoneReward;
+    messages.push(`达成${newMilestones * 1000}分里程碑！获得${milestoneReward}虚拟币`);
+  }
+
+  // 新数字成就奖励
+  const oldMaxTile = getMaxTile(oldState.board);
+  const newMaxTile = getMaxTile(newState.board);
+  if (newMaxTile > oldMaxTile && newMaxTile >= 128) {
+    bonusCoins += COIN_REWARDS.TILE_ACHIEVEMENT;
+    messages.push(`达成${newMaxTile}数字成就！获得${COIN_REWARDS.TILE_ACHIEVEMENT}虚拟币`);
+  }
+
+  // 首次胜利奖励
+  if (!oldState.won && newState.won) {
+    bonusCoins += COIN_REWARDS.FIRST_WIN;
+    messages.push(`首次达成2048！获得${COIN_REWARDS.FIRST_WIN}虚拟币`);
+  }
+
+  const finalCoins = newState.coins + bonusCoins;
+  if (bonusCoins > 0) {
+    saveCoins(finalCoins);
+  }
+
+  return { coins: finalCoins, messages };
+};
+
+// 获取棋盘上的最大数字
+const getMaxTile = (board: number[][]): number => {
+  let max = 0;
+  for (let row = 0; row < BOARD_SIZE; row++) {
+    for (let col = 0; col < BOARD_SIZE; col++) {
+      if (board[row][col] > max) {
+        max = board[row][col];
+      }
+    }
+  }
+  return max;
+};
+
+// 每日签到奖励
+export const claimDailyBonus = (gameState: GameState): { success: boolean, newCoins: number, message: string } => {
+  const today = new Date().toDateString();
+  const lastClaim = localStorage.getItem('2048-last-daily-claim');
+  
+  if (lastClaim === today) {
+    return { success: false, newCoins: gameState.coins, message: '今日已签到' };
+  }
+
+  const newCoins = gameState.coins + COIN_REWARDS.DAILY_BONUS;
+  localStorage.setItem('2048-last-daily-claim', today);
+  saveCoins(newCoins);
+
+  return { 
+    success: true, 
+    newCoins, 
+    message: `每日签到成功！获得${COIN_REWARDS.DAILY_BONUS}虚拟币` 
+  };
 };

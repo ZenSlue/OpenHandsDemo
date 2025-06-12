@@ -5,6 +5,14 @@ export interface GameState {
   score: number;
   gameOver: boolean;
   won: boolean;
+  coins: number;
+  history: GameHistoryState[];
+}
+
+export interface GameHistoryState {
+  board: number[][];
+  score: number;
+  timestamp: number;
 }
 
 export interface Position {

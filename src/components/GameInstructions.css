@@ -67,3 +67,67 @@
   font-size: 13px;
   text-align: center;
 }
+
+/* 移动端适配 */
+@media (max-width: 520px) {
+  .instructions-card {
+    max-width: 100%;
+    padding: 12px;
+    margin-top: 15px;
+  }
+  
+  .instructions-title {
+    font-size: 14px;
+  }
+  
+  .instructions-text {
+    font-size: 12px;
+  }
+  
+  .key {
+    padding: 6px 10px;
+    font-size: 14px;
+    min-width: 30px;
+  }
+  
+  .hint-label {
+    font-size: 12px;
+  }
+  
+  .hint-text {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 360px) {
+  .instructions-card {
+    padding: 10px;
+    margin-top: 12px;
+  }
+  
+  .instructions-title {
+    font-size: 13px;
+  }
+  
+  .instructions-text {
+    font-size: 11px;
+  }
+  
+  .key {
+    padding: 4px 8px;
+    font-size: 12px;
+    min-width: 25px;
+  }
+  
+  .keys {
+    gap: 8px;
+  }
+  
+  .hint-label {
+    font-size: 11px;
+  }
+  
+  .hint-text {
+    font-size: 10px;
+  }
+}

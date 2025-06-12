@@ -18,7 +18,10 @@ export const useSwipe = ({ onSwipe }: SwipeHandlers) => {
   const getDirection = useCallback((startPos: TouchPosition, endPos: TouchPosition): Direction | null => {
     const deltaX = endPos.x - startPos.x;
     const deltaY = endPos.y - startPos.y;
-    const minSwipeDistance = 50;
+    
+    // 根据屏幕尺寸调整最小滑动距离
+    const isMobile = window.innerWidth <= 768;
+    const minSwipeDistance = isMobile ? 30 : 50;
 
     if (Math.abs(deltaX) < minSwipeDistance && Math.abs(deltaY) < minSwipeDistance) {
       return null;
@@ -35,6 +38,13 @@ export const useSwipe = ({ onSwipe }: SwipeHandlers) => {
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
     const touch = e.touches[0];
     touchStart.current = { x: touch.clientX, y: touch.clientY };
+    // 防止页面滚动
+    e.preventDefault();
+  }, []);
+
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
+    // 防止页面滚动
+    e.preventDefault();
   }, []);
 
   const handleTouchEnd = useCallback((e: React.TouchEvent) => {
@@ -49,6 +59,8 @@ export const useSwipe = ({ onSwipe }: SwipeHandlers) => {
     }
 
     touchStart.current = null;
+    // 防止页面滚动
+    e.preventDefault();
   }, [getDirection, onSwipe]);
 
   // Mouse handlers
@@ -79,6 +91,7 @@ export const useSwipe = ({ onSwipe }: SwipeHandlers) => {
 
   return {
     onTouchStart: handleTouchStart,
+    onTouchMove: handleTouchMove,
     onTouchEnd: handleTouchEnd,
     onMouseDown: handleMouseDown,
     onMouseUp: handleMouseUp,

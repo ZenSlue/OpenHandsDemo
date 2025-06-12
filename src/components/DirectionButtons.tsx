@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Space } from '@arco-design/web-react';
+import { Button } from '@arco-design/web-react';
 import { IconUp, IconDown, IconLeft, IconRight } from '@arco-design/web-react/icon';
 import { Direction } from '../types';
 import './DirectionButtons.css';

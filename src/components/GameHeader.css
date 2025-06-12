@@ -1,10 +1,22 @@
 .game-header {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
   margin-bottom: 20px;
   width: 100%;
   max-width: 500px;
+  gap: 15px;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.coin-section {
+  flex-shrink: 0;
 }
 
 .title-section {
@@ -74,9 +86,19 @@
 
 @media (max-width: 520px) {
   .game-header {
+    gap: 12px;
+    margin-bottom: 15px;
+  }
+  
+  .header-content {
     flex-direction: column;
-    align-items: flex-start;
-    gap: 15px;
+    gap: 12px;
+  }
+  
+  .coin-section {
+    width: 100%;
+    display: flex;
+    justify-content: center;
   }
   
   .score-section {
@@ -86,5 +108,53 @@
   
   .game-title {
     font-size: 36px !important;
+  }
+  
+  .score-card {
+    padding: 6px 12px;
+    min-width: 60px;
+  }
+  
+  .score-label {
+    font-size: 10px;
+  }
+  
+  .score-value {
+    font-size: 16px;
+  }
+  
+  .restart-button {
+    padding: 0 16px;
+    height: 36px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 360px) {
+  .game-title {
+    font-size: 28px !important;
+  }
+  
+  .game-subtitle {
+    font-size: 12px;
+  }
+  
+  .score-card {
+    padding: 4px 8px;
+    min-width: 50px;
+  }
+  
+  .score-label {
+    font-size: 9px;
+  }
+  
+  .score-value {
+    font-size: 14px;
+  }
+  
+  .restart-button {
+    padding: 0 12px;
+    height: 32px;
+    font-size: 12px;
   }
 }

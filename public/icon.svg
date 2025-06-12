@@ -1,0 +1,17 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <rect width="512" height="512" fill="#faf8ef" rx="64"/>
+  <rect x="64" y="64" width="384" height="384" fill="#bbada0" rx="32"/>
+  
+  <!-- 2048 text -->
+  <text x="256" y="320" text-anchor="middle" font-family="Arial, sans-serif" font-size="120" font-weight="bold" fill="#776e65">2048</text>
+  
+  <!-- Small tiles decoration -->
+  <rect x="96" y="96" width="80" height="80" fill="#eee4da" rx="8"/>
+  <text x="136" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="#776e65">2</text>
+  
+  <rect x="192" y="96" width="80" height="80" fill="#ede0c8" rx="8"/>
+  <text x="232" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="#776e65">4</text>
+  
+  <rect x="336" y="96" width="80" height="80" fill="#f2b179" rx="8"/>
+  <text x="376" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="#f9f6f2">8</text>
+</svg>

@@ -5,6 +5,8 @@
   position: relative;
   width: 350px;
   height: 350px;
+  max-width: calc(100vw - 40px);
+  max-height: calc(100vw - 40px);
 }
 
 .board-grid {
@@ -111,4 +113,73 @@
   background: #3c3a32;
   color: #f9f6f2;
   font-size: 20px;
+}
+
+/* 移动端适配 */
+@media (max-width: 480px) {
+  .game-board {
+    width: calc(100vw - 40px);
+    height: calc(100vw - 40px);
+    max-width: 320px;
+    max-height: 320px;
+    padding: 8px;
+  }
+  
+  .board-grid {
+    gap: 8px;
+  }
+  
+  .tile {
+    font-size: 28px;
+  }
+  
+  .tile-128,
+  .tile-256,
+  .tile-512 {
+    font-size: 24px;
+  }
+  
+  .tile-1024,
+  .tile-2048 {
+    font-size: 20px;
+  }
+  
+  .tile-4096,
+  .tile-8192 {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 360px) {
+  .game-board {
+    width: calc(100vw - 30px);
+    height: calc(100vw - 30px);
+    max-width: 280px;
+    max-height: 280px;
+    padding: 6px;
+  }
+  
+  .board-grid {
+    gap: 6px;
+  }
+  
+  .tile {
+    font-size: 24px;
+  }
+  
+  .tile-128,
+  .tile-256,
+  .tile-512 {
+    font-size: 20px;
+  }
+  
+  .tile-1024,
+  .tile-2048 {
+    font-size: 18px;
+  }
+  
+  .tile-4096,
+  .tile-8192 {
+    font-size: 14px;
+  }
 }

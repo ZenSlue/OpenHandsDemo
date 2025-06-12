@@ -1,12 +1,23 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Space, Message } from '@arco-design/web-react';
+import { Message } from '@arco-design/web-react';
 import GameBoard from './components/GameBoard';
 import GameHeader from './components/GameHeader';
 import GameOverModal from './components/GameOverModal';
 import GameInstructions from './components/GameInstructions';
 import DirectionButtons from './components/DirectionButtons';
+import UndoButton from './components/UndoButton';
 import { GameState, Direction } from './types';
-import { initializeGame, move, addRandomTile, isGameOver, hasWon } from './gameLogic';
+import { 
+  initializeGame, 
+  move, 
+  addRandomTile, 
+  isGameOver, 
+  hasWon, 
+  addToHistory,
+  undoMove,
+  checkCoinRewards,
+  claimDailyBonus
+} from './gameLogic';
 import './App.css';
 
 const App: React.FC = () => {
@@ -39,6 +50,9 @@ const App: React.FC = () => {
   const handleMove = useCallback((direction: Direction) => {
     if (gameState.gameOver) return;
 
+    // 先保存当前状态到历史记录
+    const stateWithHistory = addToHistory(gameState);
+
     const result = move(gameState.board, direction);
     
     if (result.moved) {
@@ -47,16 +61,29 @@ const App: React.FC = () => {
       const gameOver = isGameOver(newBoard);
       const won = hasWon(newBoard);
 
-      setGameState({
+      const newState: GameState = {
         board: newBoard,
         score: newScore,
         gameOver,
-        won: won || gameState.won
-      });
+        won: won || gameState.won,
+        coins: gameState.coins,
+        history: stateWithHistory.history
+      };
+
+      // 检查虚拟币奖励
+      const coinReward = checkCoinRewards(gameState, newState);
+      newState.coins = coinReward.coins;
+
+      setGameState(newState);
 
       if (result.score > 0) {
         Message.success(`+${result.score} 分！`);
       }
+
+      // 显示虚拟币奖励消息
+      coinReward.messages.forEach(message => {
+        Message.success(message);
+      });
     }
   }, [gameState]);
 
@@ -97,20 +124,65 @@ const App: React.FC = () => {
     setShowModal(false);
   };
 
+  const handleUndo = useCallback(() => {
+    const result = undoMove(gameState);
+    if (result.success && result.newState) {
+      setGameState(result.newState);
+      Message.success(result.message);
+    } else {
+      Message.error(result.message);
+    }
+  }, [gameState]);
+
+  const handleDailyBonus = useCallback(() => {
+    const result = claimDailyBonus(gameState);
+    if (result.success) {
+      setGameState(prev => ({ ...prev, coins: result.newCoins }));
+      Message.success(result.message);
+    } else {
+      Message.info(result.message);
+    }
+  }, [gameState]);
+
+  const canClaimDaily = useCallback(() => {
+    const today = new Date().toDateString();
+    const lastClaim = localStorage.getItem('2048-last-daily-claim');
+    return lastClaim !== today;
+  }, []);
+
   return (
     <div className="app">
       <div className="game-container">
-        <GameHeader 
-          score={gameState.score}
-          bestScore={bestScore}
-          onRestart={handleRestart}
-        />
+        <div className="game-header-section">
+          <GameHeader 
+            score={gameState.score}
+            bestScore={bestScore}
+            coins={gameState.coins}
+            onRestart={handleRestart}
+            onDailyBonus={handleDailyBonus}
+            canClaimDaily={canClaimDaily()}
+          />
+        </div>
         
-        <Space direction="vertical" size="medium" align="center">
+        <div className="game-board-section">
           <GameBoard board={gameState.board} onMove={handleMove} />
-          <DirectionButtons onMove={handleMove} disabled={gameState.isGameOver} />
+        </div>
+        
+        <div className="game-controls-section">
+          <div className="controls-row">
+            <DirectionButtons onMove={handleMove} disabled={gameState.gameOver} />
+            <UndoButton 
+              onUndo={handleUndo}
+              disabled={gameState.gameOver}
+              coins={gameState.coins}
+              hasHistory={gameState.history.length > 0}
+            />
+          </div>
+        </div>
+        
+        <div className="game-instructions-section">
           <GameInstructions />
-        </Space>
+        </div>
         
         <GameOverModal
           visible={showModal}
