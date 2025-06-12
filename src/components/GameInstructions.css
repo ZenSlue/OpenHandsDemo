@@ -19,11 +19,22 @@
   line-height: 1.4;
 }
 
+.control-hints {
+  margin-top: 10px;
+}
+
 .key-hints {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.keys {
   display: flex;
   justify-content: center;
   gap: 10px;
-  margin-top: 10px;
 }
 
 .key {
@@ -36,4 +47,23 @@
   min-width: 35px;
   text-align: center;
   display: inline-block;
+}
+
+.mouse-hints {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.hint-label {
+  color: #776e65;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.hint-text {
+  color: #776e65;
+  font-size: 13px;
+  text-align: center;
 }

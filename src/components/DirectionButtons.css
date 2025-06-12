@@ -1,0 +1,111 @@
+.direction-buttons {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.direction-buttons-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.direction-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.direction-button {
+  width: 50px !important;
+  height: 50px !important;
+  border-radius: 8px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 20px !important;
+  transition: all 0.2s ease !important;
+  background: #f7f8fa !important;
+  border: 2px solid #e5e6eb !important;
+  color: #4e5969 !important;
+}
+
+.direction-button:hover {
+  background: #f2f3f5 !important;
+  border-color: #c9cdd4 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.direction-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.direction-button:disabled {
+  opacity: 0.5 !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.direction-spacer {
+  width: 50px;
+  height: 50px;
+}
+
+.direction-hint {
+  font-size: 14px;
+  color: #86909c;
+  text-align: center;
+  margin-top: 8px;
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+  .direction-buttons {
+    margin-top: 16px;
+  }
+  
+  .direction-button {
+    width: 45px !important;
+    height: 45px !important;
+    font-size: 18px !important;
+  }
+  
+  .direction-spacer {
+    width: 45px;
+    height: 45px;
+  }
+  
+  .direction-hint {
+    font-size: 12px;
+    padding: 0 16px;
+  }
+}
+
+/* 键盘样式效果 */
+.direction-button.up-button {
+  background: linear-gradient(135deg, #f7f8fa 0%, #e5e6eb 100%) !important;
+}
+
+.direction-button.down-button {
+  background: linear-gradient(135deg, #f7f8fa 0%, #e5e6eb 100%) !important;
+}
+
+.direction-button.left-button {
+  background: linear-gradient(135deg, #f7f8fa 0%, #e5e6eb 100%) !important;
+}
+
+.direction-button.right-button {
+  background: linear-gradient(135deg, #f7f8fa 0%, #e5e6eb 100%) !important;
+}
+
+/* 按下效果 */
+.direction-button:active {
+  background: linear-gradient(135deg, #e5e6eb 0%, #c9cdd4 100%) !important;
+}

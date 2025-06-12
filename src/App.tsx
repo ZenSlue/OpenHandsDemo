@@ -4,6 +4,7 @@ import GameBoard from './components/GameBoard';
 import GameHeader from './components/GameHeader';
 import GameOverModal from './components/GameOverModal';
 import GameInstructions from './components/GameInstructions';
+import DirectionButtons from './components/DirectionButtons';
 import { GameState, Direction } from './types';
 import { initializeGame, move, addRandomTile, isGameOver, hasWon } from './gameLogic';
 import './App.css';
@@ -106,7 +107,7 @@ const App: React.FC = () => {
         />
         
         <Space direction="vertical" size="medium" align="center">
-          <GameBoard board={gameState.board} />
+          <GameBoard board={gameState.board} onMove={handleMove} />
           <GameInstructions />
         </Space>
         
