@@ -1,0 +1,39 @@
+.instructions-card {
+  background: #f9f6f2;
+  border: none;
+  border-radius: 6px;
+  padding: 15px;
+  margin-top: 20px;
+  max-width: 350px;
+}
+
+.instructions-title {
+  color: #776e65;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.instructions-text {
+  color: #776e65;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.key-hints {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.key {
+  background: #8f7a66;
+  color: #f9f6f2;
+  padding: 8px 12px;
+  border-radius: 3px;
+  font-weight: bold;
+  font-size: 16px;
+  min-width: 35px;
+  text-align: center;
+  display: inline-block;
+}

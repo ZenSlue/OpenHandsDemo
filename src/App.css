@@ -1,0 +1,56 @@
+.app {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background: #faf8ef;
+}
+
+.game-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 500px;
+  width: 100%;
+}
+
+/* Responsive design */
+@media (max-width: 520px) {
+  .app {
+    padding: 10px;
+  }
+  
+  .game-container {
+    max-width: 100%;
+  }
+}
+
+/* Focus outline for accessibility */
+.app:focus {
+  outline: none;
+}
+
+/* Prevent text selection during gameplay */
+.game-container {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Animation for tile movements */
+@keyframes tile-appear {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.tile {
+  animation: tile-appear 0.2s ease-in-out;
+}

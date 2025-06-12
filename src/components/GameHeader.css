@@ -1,0 +1,90 @@
+.game-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  width: 100%;
+  max-width: 500px;
+}
+
+.title-section {
+  flex: 1;
+}
+
+.game-title {
+  color: #776e65 !important;
+  margin: 0 !important;
+  font-size: 48px !important;
+  font-weight: bold !important;
+}
+
+.game-subtitle {
+  color: #776e65;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.score-section {
+  display: flex;
+  align-items: center;
+}
+
+.score-card {
+  background: #bbada0;
+  border: none;
+  border-radius: 3px;
+  padding: 8px 16px;
+  min-width: 70px;
+  text-align: center;
+}
+
+.score-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.score-label {
+  color: #eee4da;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.score-value {
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.restart-button {
+  background: #8f7a66;
+  border: none;
+  color: #f9f6f2;
+  font-weight: bold;
+  border-radius: 3px;
+  padding: 0 20px;
+  height: 40px;
+}
+
+.restart-button:hover {
+  background: #9f8a76;
+}
+
+@media (max-width: 520px) {
+  .game-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  
+  .score-section {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .game-title {
+    font-size: 36px !important;
+  }
+}
