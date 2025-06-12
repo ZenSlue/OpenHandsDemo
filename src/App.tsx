@@ -108,6 +108,7 @@ const App: React.FC = () => {
         
         <Space direction="vertical" size="medium" align="center">
           <GameBoard board={gameState.board} onMove={handleMove} />
+          <DirectionButtons onMove={handleMove} disabled={gameState.isGameOver} />
           <GameInstructions />
         </Space>
         
